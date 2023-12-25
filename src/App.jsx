@@ -1,35 +1,99 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+/*
 function App() {
-  const [count, setCount] = useState(0)
-
+  const[count, setCount] = useState(0);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h1> Counter Game </h1>
+      <Buttons count={count} setCount={setCount}/>
+      <Counter count={count} />
+    </div>
   )
 }
 
-export default App
+function Buttons({count, setCount}){
+  return (<div>
+    <Increase count={count} setCount={setCount}/>
+    <Decrease count={count} setCount={setCount}/>
+  </div>)
+}
+
+function Increase({count, setCount}){
+  return <div>
+    <button onClick={()=>setCount(count+1)}>Increase</button>
+  </div>
+}
+
+function Decrease({count, setCount}){
+  return <div>
+    <button onClick={()=>setCount(count-1)}>Decrease</button>
+  </div>
+}
+
+function Counter({count}){
+  return <div>
+    <h1> {count} </h1>
+  </div>
+}
+*/
+
+import React from 'react';
+import { RecoilRoot, useRecoilValue, useSetRecoilState, atom } from 'recoil';
+import './App.css';
+
+const countState = atom({
+  key: 'countState',
+  default: 0
+});
+
+function App() {
+
+  return (
+    <RecoilRoot>
+      <div>
+        <h1>Counter Game</h1>
+        <Buttons />
+        <Counter />
+      </div>
+    </RecoilRoot>
+  );
+}
+
+function Buttons() {
+  return (
+    <div>
+      <Increase />
+      <Decrease />
+    </div>
+  );
+}
+
+function Increase() {
+  const setCount = useSetRecoilState(countState);
+
+  return (
+    <div>
+      <button onClick={() => setCount((prevCount) => prevCount + 1)}>Increase</button>
+    </div>
+  );
+}
+
+function Decrease() {
+  const setCount = useSetRecoilState(countState);
+  return (
+    <div>
+      <button onClick={() => setCount((prevCount) => prevCount - 1)}>Decrease</button>
+    </div>
+  );
+}
+
+function Counter() {
+  const count = useRecoilValue(countState);
+
+  return (
+    <div>
+      <h1>{count}</h1>
+    </div>
+  );
+}
+
+export default App;
